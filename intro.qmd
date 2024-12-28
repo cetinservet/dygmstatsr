@@ -1,0 +1,16 @@
+# Giriş {.unnumbered}
+
+Bu çalışma, devlet yardımlarının etkilerinin ölçülmesinde kullanılan istatistiksel analiz ve veri dönüşüm süreçlerine odaklanmaktadır. Çalışma, temel istatistiksel kavramlardan başlayarak, R programlama dili kullanılarak gerçekleştirilen veri manipülasyonu ve analitik yöntemlere kadar geniş bir yelpazeyi kapsamaktadır.
+
+Çalışmanın ilk bölümü, istatistiksel analizlerde temel teşkil eden kavramların açıklanmasıyla başlamaktadır. Bu kapsamda, veri tipleri ele alınarak sayısal (nicel) ve kategorik (nitel) verilerin sınıflandırılmasına ve bu sınıfların alt gruplarına (örneğin, sürekli, kesikli, nominal, ordinal) değinilmiştir. Her bir veri tipi, özellikleri ve kullanım alanları açısından örneklerle desteklenmiştir. Bu açıklamalar, analiz süreçlerinde verilerin doğru şekilde sınıflandırılması ve uygun yöntemlerin seçilmesi açısından önem taşımaktadır.
+
+Merkezi eğilim ölçüleri (ortalama, medyan ve mod) ve yayılım ölçüleri (aralık, varyans, standart sapma, çeyrekler açıklığı), veri kümesinin genel özelliklerini ve dağılımını anlamak için kullanılan temel araçlar olarak ele alınmıştır. Bu ölçülerin avantajları ve sınırlamaları açıklanmış, farklı veri yapılarında nasıl kullanılabilecekleri örneklerle gösterilmiştir. Dağılım türleri ve merkezi limit teoremi gibi istatistikte sıkça kullanılan kavramlara da yer verilmiş, bu kavramların istatistiksel analiz süreçlerinde taşıdığı önem vurgulanmıştır.
+
+Çalışmanın ikinci bölümü, veri manipülasyonu ve dönüşüm tekniklerine odaklanmaktadır. Veri çerçeveleri üzerinde yapılan seçim, sıralama, filtreleme, dönüştürme ve özetleme gibi işlemler, R programlama dili kullanılarak uygulamalı örneklerle ele alınmıştır. Özellikle dplyr paketi ile veri manipülasyonu süreçleri sade bir şekilde anlatılmış ve kullanılan yöntemlerin adımları açıklanmıştır. Bu yöntemler, veri analizi sürecinin başlangıcında sıkça karşılaşılan zorluklara çözüm sunmayı amaçlamaktadır.
+
+Veri temizleme işlemleri kapsamında eksik verilerle çalışmaya yönelik detaylı bir anlatı sunulmaktadır. Eksik verilerin tespiti, analiz sürecindeki etkileri ve bu durumların yönetimi için kullanılan yöntemler, teorik açıklamalar ve R programlama diliyle gerçekleştirilen uygulamalarla desteklenmiştir. Eksik veri oranlarının hesaplanması, bu verilerin görselleştirilmesi ve eksik değerlerin doldurulmasına yönelik çeşitli yaklaşımlar kitapta yer bulmuştur. Özellikle MICE ve dlookr gibi R paketlerinin bu alandaki işlevselliği, uygulamalı örneklerle açıklanmıştır. Eksik verilerin uygun yöntemlerle işlenmesi, analiz sonuçlarının doğruluğunu artırmak ve bu verilerin veri setindeki diğer bilgilerle uyumlu hale gelmesini sağlamak açısından önem taşımaktadır.
+
+Kitabın bu iki bölümü, okuyucunun hem istatistiksel analiz hem de veri manipülasyonu konularında sağlam bir altyapı kazanmasını sağlamayı hedeflemektedir. Teorik bilgiler ve uygulamalı örneklerin bir arada sunulması ile veri analizi süreçlerinde karşılaşabilecek zorluklara çözüm üretilebilmesi amaçlanmıştır.
+
+
+\newpage

@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>3&nbsp; Dağılım Türleri ve Merkezi Limit Teoremi – R ile İstatistiğe Giriş ve Veri Dönüşümü</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./hipotez.html" rel="next">
+<link href="./ozet_istatistikler.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./temel_istatistik.html">Temel İstatistik</a></li><li class="breadcrumb-item"><a href="./dagilim.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dağılım Türleri ve Merkezi Limit Teoremi</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R ile İstatistiğe Giriş ve Veri Dönüşümü</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/cetinservet/veritemizleme" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./R-ile-İstatistiğe-Giriş-ve-Veri-Dönüşümü.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./R-ile-İstatistiğe-Giriş-ve-Veri-Dönüşümü.docx">
+              <i class="bi bi-file-word pe-1"></i>
+            Download Docx
+            </a>
+          </li>
+      </ul>
+</div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Önsöz</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Giriş</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./temel_istatistik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Temel İstatistik</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./veri_tipleri.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">İstatistikte Veri Tipleri</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ozet_istatistikler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Merkezi Eğilim ve Yayılım Ölçüleri</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dagilim.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dağılım Türleri ve Merkezi Limit Teoremi</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hipotez.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Güven Aralıkları ve Hipotez Testleri</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./veri_donusum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Veri Dönüşümleri</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./veri_manipulasyonu.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Veri Manipülasyonu</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./veri_temizleme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Veri Temizleme</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referanslar</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">İçindekiler</h2>
+   
+  <ul>
+<li>
+<a href="#ayr%C4%B1k-olas%C4%B1l%C4%B1k-da%C4%9F%C4%B1l%C4%B1mlar%C4%B1-discrete-probability-distributions" id="toc-ayrık-olasılık-dağılımları-discrete-probability-distributions" class="nav-link active" data-scroll-target="#ayr%C4%B1k-olas%C4%B1l%C4%B1k-da%C4%9F%C4%B1l%C4%B1mlar%C4%B1-discrete-probability-distributions"><span class="header-section-number">3.1</span> Ayrık Olasılık Dağılımları (Discrete Probability Distributions)</a>
+  <ul class="collapse">
+<li><a href="#binom-da%C4%9F%C4%B1l%C4%B1m%C4%B1-binomial-distribution" id="toc-binom-dağılımı-binomial-distribution" class="nav-link" data-scroll-target="#binom-da%C4%9F%C4%B1l%C4%B1m%C4%B1-binomial-distribution"><span class="header-section-number">3.1.1</span> Binom Dağılımı (Binomial Distribution)</a></li>
+  <li><a href="#poisson-da%C4%9F%C4%B1l%C4%B1m%C4%B1-poisson-distribution" id="toc-poisson-dağılımı-poisson-distribution" class="nav-link" data-scroll-target="#poisson-da%C4%9F%C4%B1l%C4%B1m%C4%B1-poisson-distribution"><span class="header-section-number">3.1.2</span> Poisson Dağılımı (Poisson Distribution)</a></li>
+  <li><a href="#geometrik-da%C4%9F%C4%B1l%C4%B1m-geometric-distribution" id="toc-geometrik-dağılım-geometric-distribution" class="nav-link" data-scroll-target="#geometrik-da%C4%9F%C4%B1l%C4%B1m-geometric-distribution"><span class="header-section-number">3.1.3</span> Geometrik Dağılım (Geometric Distribution)</a></li>
+  <li><a href="#hipergeometrik-da%C4%9F%C4%B1l%C4%B1m-hypergeometric-distribution" id="toc-hipergeometrik-dağılım-hypergeometric-distribution" class="nav-link" data-scroll-target="#hipergeometrik-da%C4%9F%C4%B1l%C4%B1m-hypergeometric-distribution"><span class="header-section-number">3.1.4</span> Hipergeometrik Dağılım (Hypergeometric Distribution)</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#s%C3%BCrekli-olas%C4%B1l%C4%B1k-da%C4%9F%C4%B1l%C4%B1mlar%C4%B1-continuous-probability-distributions" id="toc-sürekli-olasılık-dağılımları-continuous-probability-distributions" class="nav-link" data-scroll-target="#s%C3%BCrekli-olas%C4%B1l%C4%B1k-da%C4%9F%C4%B1l%C4%B1mlar%C4%B1-continuous-probability-distributions"><span class="header-section-number">3.2</span> Sürekli Olasılık Dağılımları (Continuous Probability Distributions)</a>
+  <ul class="collapse">
+<li><a href="#normal-da%C4%9F%C4%B1l%C4%B1m-normal-distribution" id="toc-normal-dağılım-normal-distribution" class="nav-link" data-scroll-target="#normal-da%C4%9F%C4%B1l%C4%B1m-normal-distribution"><span class="header-section-number">3.2.1</span> Normal Dağılım (Normal Distribution)</a></li>
+  <li><a href="#standart-normal-da%C4%9F%C4%B1l%C4%B1m" id="toc-standart-normal-dağılım" class="nav-link" data-scroll-target="#standart-normal-da%C4%9F%C4%B1l%C4%B1m"><span class="header-section-number">3.2.2</span> Standart Normal Dağılım</a></li>
+  <li><a href="#t-da%C4%9F%C4%B1l%C4%B1m%C4%B1-t-distribution" id="toc-t-dağılımı-t-distribution" class="nav-link" data-scroll-target="#t-da%C4%9F%C4%B1l%C4%B1m%C4%B1-t-distribution"><span class="header-section-number">3.2.3</span> t-Dağılımı (t-Distribution)</a></li>
+  <li><a href="#%C3%BCstel-da%C4%9F%C4%B1l%C4%B1m-exponential-distribution" id="toc-üstel-dağılım-exponential-distribution" class="nav-link" data-scroll-target="#%C3%BCstel-da%C4%9F%C4%B1l%C4%B1m-exponential-distribution"><span class="header-section-number">3.2.4</span> Üstel Dağılım (Exponential Distribution)</a></li>
+  <li><a href="#tekd%C3%BCze-da%C4%9F%C4%B1l%C4%B1m-uniform-distribution" id="toc-tekdüze-dağılım-uniform-distribution" class="nav-link" data-scroll-target="#tekd%C3%BCze-da%C4%9F%C4%B1l%C4%B1m-uniform-distribution"><span class="header-section-number">3.2.5</span> Tekdüze Dağılım (Uniform Distribution)</a></li>
+  <li><a href="#gamma-da%C4%9F%C4%B1l%C4%B1m%C4%B1-gamma-distribution" id="toc-gamma-dağılımı-gamma-distribution" class="nav-link" data-scroll-target="#gamma-da%C4%9F%C4%B1l%C4%B1m%C4%B1-gamma-distribution"><span class="header-section-number">3.2.6</span> Gamma Dağılımı (Gamma Distribution)</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./temel_istatistik.html">Temel İstatistik</a></li><li class="breadcrumb-item"><a href="./dagilim.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dağılım Türleri ve Merkezi Limit Teoremi</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dağılım Türleri ve Merkezi Limit Teoremi</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="ayrık-olasılık-dağılımları-discrete-probability-distributions" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="ayrık-olasılık-dağılımları-discrete-probability-distributions">
+<span class="header-section-number">3.1</span> Ayrık Olasılık Dağılımları (Discrete Probability Distributions)</h2>
+<p>Ayrık olasılık dağılımları, yalnızca belirli ve sayılabilir değerler üzerinde tanımlanan olasılık dağılımlarıdır. Bu, değerlerin kesintili olduğu ve arada başka olasılıkların bulunmadığı anlamına gelir. Örneğin, bir zarın atılması durumunda sonuçlar yalnızca {1, 2, 3, 4, 5, 6} şeklindedir. Bir zarın 3.5 gibi bir sonuç göstermesi mümkün değildir, çünkü bu değer ayrık olasılıkların tanımı dışındadır.</p>
+<p>Bu tür dağılımlar, bir olayın belirli bir sayıda gerçekleşme olasılığını modellemek ve tahmin etmek için kullanılır. Ayrık olasılık dağılımları, genellikle bir olayın “kaç kez” veya “hangi durumda” gerçekleştiğini anlamak için kullanılır.</p>
+<section id="binom-dağılımı-binomial-distribution" class="level3" data-number="3.1.1"><h3 data-number="3.1.1" class="anchored" data-anchor-id="binom-dağılımı-binomial-distribution">
+<span class="header-section-number">3.1.1</span> Binom Dağılımı (Binomial Distribution)</h3>
+<p>Binom dağılımı, belirli bir sayıda bağımsız denemede bir olayın kaç kez başarılı olduğunu modellemek için kullanılır. Örneğin, 10 kez madeni para atıldığında, yazının kaç kez geleceğini tahmin etmek binom dağılımıyla modellenebilir.</p>
+<p>Binom dağılımı, her bir denemenin birbirinden bağımsız olduğu ve her birinde başarı veya başarısızlık gibi iki olası sonuç bulunduğu durumları ifade eder. Başarı olasılığı sabittir ve her bir deneme sonucu diğerlerinden bağımsızdır. Bu nedenle, belirli bir deneme sayısı için başarı sayısının olasılıklarını modellemek için oldukça kullanışlıdır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># dbinom() fonksiyonu ile olasılık hesaplama</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span> <span class="co"># dbinom() fonksiyonu</span></span>
+<span>  x <span class="op">=</span> <span class="fl">3</span>, <span class="co"># x: Başarı sayısı</span></span>
+<span>  size <span class="op">=</span> <span class="fl">10</span>, <span class="co"># size: Toplam deneme sayısı</span></span>
+<span>  prob <span class="op">=</span> <span class="fl">0.5</span><span class="co"># prob: Her bir denemede başarı olasılığı</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1171875</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 10 bağımsız denemede, başarı olasılığı 0.5 olan bir olayın tam 3 kez </span></span>
+<span><span class="co"># gerçekleşme olasılığını hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="set.seed() Fonksiyonu">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+set.seed() Fonksiyonu
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> fonksiyonu, rastgele sayı üretim süreçlerinde kullanılan bir kontrol mekanizmasıdır ve R’de rastgelelik ile çalışırken sonuçların yeniden üretilebilir olmasını sağlar.</p>
+<p><strong>Rastgelelik ve Sorunlar:</strong> Rastgele sayı üretimi aslında “sözde rastgele sayı üretimi” (pseudo-random number generation) olarak çalışır. Bu işlem bir başlangıç noktasına (seed) dayanır. Eğer başlangıç noktası aynıysa, üretilen rastgele sayılar da aynı olur.</p>
+<p>Eğer <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> <strong>kullanılmazsa</strong>: R her çalıştırıldığında farklı rastgele sayılar üretir. Bu durum, analizlerin yeniden üretilebilirliğini zorlaştırır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Rastgele sayılar üretme</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1489761 0.9894432 0.6275486 0.6397097 0.5953498</code></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 0 ile 1 arasında 5 rastgele sayı üretir. Her çalışmada sayılar da değişir.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Eğer <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> <strong>kullanılırsa</strong>: Kod her çalıştırıldığında aynı başlangıç noktası kullanılır ve aynı rastgele sayılar üretilir. Bu, kodun tutarlı ve yeniden üretilebilir olmasını sağlar.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Rastgelelik için sabit bir başlangıç noktası belirleme</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="co"># set.seed() kullanıldığında, rastgele sayı üretimi kontrol altına alınır.</span></span>
+<span></span>
+<span><span class="co"># 0 ile 1 arasında 5 rastgele sayı üretme</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># Kod her çalıştırıldığında aynı sayılar üretilir. Değişmez.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>set.seed(123) ile runif(5) kodu çalıştırıldığında, aynı yazılım ortamı ve aynı R sürümünde çalışan dünyadaki tüm bilgisayarlarda aynı sonucu verir.</p>
+</blockquote>
+</div>
+</div>
+</section><section id="poisson-dağılımı-poisson-distribution" class="level3" data-number="3.1.2"><h3 data-number="3.1.2" class="anchored" data-anchor-id="poisson-dağılımı-poisson-distribution">
+<span class="header-section-number">3.1.2</span> Poisson Dağılımı (Poisson Distribution)</h3>
+<p>Poisson dağılımı, belirli bir zaman aralığında veya belirli bir alanda bir olayın kaç kez gerçekleştiğini modellemek için kullanılır. Örneğin, bir çağrı merkezine bir saatte gelen çağrıların sayısını tahmin etmek Poisson dağılımı ile modellenebilir.</p>
+<p>Poisson dağılımı, olayların sabit bir ortalama hızla meydana geldiği durumları ifade eder. Bu olaylar birbirinden bağımsızdır ve herhangi bir zaman veya alanda iki olayın aynı anda gerçekleşme olasılığı yok denecek kadar azdır. Özellikle nadir olayların sayısını modellemek için oldukça kullanışlıdır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Poisson dağılımında belirli bir olayın gerçekleşme olasılığını hesaplama</span></span>
+<span></span>
+<span><span class="co"># dpois() fonksiyonu</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span> <span class="co"># dpois() fonksiyonu</span></span>
+<span>  x <span class="op">=</span> <span class="fl">3</span>, <span class="co"># x: Olay sayısı (kaç kez gerçekleştiği)</span></span>
+<span>  lambda <span class="op">=</span> <span class="fl">5</span> <span class="co"># lambda: Ortalama olay sayısı (beklenen değer)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1403739</code></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ortalama 5 olay gerçekleşen bir durumda, 3 olayın gerçekleşme olasılığı</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="geometrik-dağılım-geometric-distribution" class="level3" data-number="3.1.3"><h3 data-number="3.1.3" class="anchored" data-anchor-id="geometrik-dağılım-geometric-distribution">
+<span class="header-section-number">3.1.3</span> Geometrik Dağılım (Geometric Distribution)</h3>
+<p>Geometrik dağılım, bir denemede başarıdan önceki başarısızlıkların sayısını modellemek için kullanılır. Örneğin, bir zar atışında ilk kez 6 gelene kadar kaç başarısızlık (6 dışında başka bir sayı) yaşandığını tahmin etmek bu dağılım ile modellenebilir.</p>
+<p>Geometrik dağılım, bir olayın başarıyla sonuçlanana kadar tekrarlanmasını ifade eder. Başarıya ulaşma olasılığı, denemeler ilerledikçe giderek azalır. Teorik olarak olasılıklar sonsuza kadar devam eder; yani başarının hiçbir zaman gerçekleşmeme olasılığı sıfır değildir, ancak bu olasılık çok küçüktür. Bu nedenle geometrik dağılım, nadir olayların kaç deneme sonra gerçekleşebileceğini modellemek için oldukça kullanışlıdır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Geometrik dağılımda olasılık hesaplama</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Geometric.html">dgeom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, <span class="co"># x: Başarıdan önceki başarısızlık sayısı</span></span>
+<span>      prob <span class="op">=</span> <span class="fl">0.2</span> <span class="co"># prob: Her bir denemede başarı olasılığı</span></span>
+<span>      <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1024</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Başarı olasılığı 0.2 olan bir deneyde, </span></span>
+<span><span class="co"># ilk başarıdan önce tam 3 başarısızlık gerçekleşme olasılığını hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="hipergeometrik-dağılım-hypergeometric-distribution" class="level3" data-number="3.1.4"><h3 data-number="3.1.4" class="anchored" data-anchor-id="hipergeometrik-dağılım-hypergeometric-distribution">
+<span class="header-section-number">3.1.4</span> Hipergeometrik Dağılım (Hypergeometric Distribution)</h3>
+<p>Hipergeometrik dağılım, belirli bir özelliğe sahip nesnelerin bir örneklemde kaç kez seçileceğini modellemek için kullanılır. Örneğin, bir torbada 10 beyaz ve 5 siyah bilye varsa, rastgele seçilen 5 bilye içindeki beyaz bilye sayısını tahmin etmek için kullanılır.</p>
+<p>Hipergeometrik dağılım, belirli bir popülasyondan yapılan örneklemin, geri koymadan seçilmesi durumunda belirli bir özelliğe sahip nesnelerin sayısını modellemek için kullanılır. Bu dağılımda, seçim yapıldıkça popülasyondaki nesnelerin oranı değiştiği için her seçimin olasılığı bağımsız değildir. Bu, örneklemler arası bağımlılığın olduğu durumları modellemek için oldukça kullanışlıdır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Hipergeometrik dağılımda olasılık hesaplama</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Hypergeometric.html">dhyper</a></span><span class="op">(</span> <span class="co"># dhyper() fonksiyonu</span></span>
+<span>  x <span class="op">=</span> <span class="fl">3</span>, <span class="co"># x: Örneklemde istenen özelliğe sahip nesne sayısı</span></span>
+<span>  m <span class="op">=</span> <span class="fl">10</span>, <span class="co"># m: Popülasyondaki istenen özelliğe sahip nesne sayısı</span></span>
+<span>  n <span class="op">=</span> <span class="fl">5</span>, <span class="co"># n: Popülasyondaki diğer nesne sayısı</span></span>
+<span>  k <span class="op">=</span> <span class="fl">5</span> <span class="co"># k: Örneklem büyüklüğü</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3996004</code></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Popülasyonda 10 beyaz, 5 siyah bilye bulunan bir torbadan, rastgele </span></span>
+<span><span class="co"># seçilen 5 bilyede tam 3 beyaz bilye bulunma olasılığını hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="sürekli-olasılık-dağılımları-continuous-probability-distributions" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="sürekli-olasılık-dağılımları-continuous-probability-distributions">
+<span class="header-section-number">3.2</span> Sürekli Olasılık Dağılımları (Continuous Probability Distributions)</h2>
+<p>Sürekli Olasılık Dağılımları (Continuous Probability Distributions) Sürekli olasılık dağılımları, bir aralıktaki değerler üzerinde tanımlanan olasılık dağılımlarıdır. Bu, değerlerin kesintisiz olduğu ve belirli bir değer yerine bir aralık için olasılık hesaplandığı anlamına gelir. Örneğin, bir kişinin boyu 170 cm olabilir, ancak 170.1 cm veya 170.25 cm gibi sonsuz sayıda ara değer de mümkündür. Bu nedenle, sürekli dağılımlarda belirli bir değerin olasılığı sıfırdır, ancak bir aralık içerisindeki olasılık hesaplanabilir.</p>
+<p>Bu tür dağılımlar, bir olayın belirli bir aralıktaki değerlerde gerçekleşme olasılığını modellemek ve tahmin etmek için kullanılır. Sürekli olasılık dağılımları, genellikle bir değişkenin “hangi aralıkta” ya da “ne kadar” gerçekleştiğini anlamak için kullanılır. Normal dağılım, üstel dağılım ve tekdüze dağılım gibi modeller sürekli olasılık dağılımlarına örnektir.</p>
+<section id="normal-dağılım-normal-distribution" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="normal-dağılım-normal-distribution">
+<span class="header-section-number">3.2.1</span> Normal Dağılım (Normal Distribution)</h3>
+<p>Normal dağılım, doğal olayların çoğunu modellemek için kullanılan çan şeklinde bir sürekli olasılık dağılımıdır. Örneğin, bir sınıftaki öğrencilerin boylarının ortalamalarının etrafında simetrik bir şekilde dağıldığını gözlemlemek, normal dağılımın bir örneğidir. (Çan Eğrisi)</p>
+<p>Normal dağılım, sürekli bir veri setinin ortalama etrafında yoğunlaşması ve uçlara doğru gidildikçe olasılıkların azalması durumunu modellemek için kullanılır. Normal dağılım simetriktir ve ortalama, medyan ve mod aynı noktada bulunur. Doğadaki birçok olayın normal dağılıma uyduğu gözlemlenmiştir ve bu nedenle istatistikte sıkça kullanılır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Normal dağılımda olasılık yoğunluğunu hesaplama</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span> <span class="co"># dnorm() fonksiyonu</span></span>
+<span>  x <span class="op">=</span> <span class="fl">0</span>,<span class="co"># x: Değerler</span></span>
+<span>  mean <span class="op">=</span> <span class="fl">0</span>, <span class="co"># mean: Ortalama</span></span>
+<span>  sd <span class="op">=</span> <span class="fl">1</span> <span class="co"># sd: Standart sapma</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3989423</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ortalama 0 ve standart sapma 1 olan bir normal dağılımda, </span></span>
+<span><span class="co"># tam olarak 0 değerinin olasılık yoğunluğunu hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Normal Dağılım Grafik Görünümü</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="dagilim_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Normal Dağılım Neden Önemli">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Normal Dağılım Neden Önemli
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Normal dağılım, istatistik biliminde temel bir yere sahiptir, çünkü birçok doğal olay ve sosyal fenomen normal dağılım özellikleri sergilemektedir. Özellikle parametrik testler (örneğin, t-testi ve ANOVA) ve regresyon analizleri, verilerin normal dağılıma uygun olduğu varsayımı üzerine inşa edilmiştir. Normal dağılımın bu denli önemli olmasının temel nedenlerinden biri, Merkezi Limit Teoremi’dir.</p>
+<p>Etki değerlendirme yöntemlerinde, özellikle yarı deneysel yaklaşımlar (farkların farkı, eğilim skoru eşleştirme, regresyon süreksizliği gibi), analizlerin güvenilirliği ve geçerliliği büyük ölçüde normal dağılım varsayımına bağlıdır. Normal dağılım, hata terimlerinin ve sonuç değişkenlerinin istatistiksel gücünü ve analiz sonuçlarının doğruluğunu artırır. Parametrik testlerin (örneğin, t-testi, ANOVA) veya regresyon modellerinin etkin bir şekilde kullanılabilmesi için bu varsayım kritik bir öneme sahiptir. Normal dağılım sağlanmadığında, analiz sonuçları yanıltıcı olabilir ve etkilerin doğru tahmini güçleşir. Bu nedenle, yarı deneysel yöntemler uygulanmadan önce verilerin dağılımını kontrol etmek ve gerekirse gerekli dönüşümleri uygulamak, güvenilir ve anlamlı sonuçlar elde etmek için vazgeçilmez bir adımdır.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Merkezi Limit Teoremi">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Merkezi Limit Teoremi
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Merkezi Limit Teoremi, bağımsız ve aynı dağılıma sahip rastgele değişkenlerin aritmetik ortalamasının, örneklem büyüklüğü yeterince büyük olduğunda yaklaşık olarak normal dağılım göstereceğini ifade eder. Bu teorem, rastgele değişkenlerin varyansının sonlu olması durumunda geçerlidir ve örneklem büyüklüğü arttıkça, toplam veya ortalamanın dağılımının normal bir şekil alacağını belirtir. Merkezi Limit Teoremi, başlangıçta normal dağılıma uymayan verilerin bile, büyük örneklem boyutlarında ortalamalarının normal dağılıma yakınsama eğiliminde olduğunu söyler. Bu, istatistiksel analizlerde normal dağılımın neden bu kadar sık kullanıldığını açıklayan temel bir kavramdır.</p>
+</div>
+</div>
+</section><section id="standart-normal-dağılım" class="level3" data-number="3.2.2"><h3 data-number="3.2.2" class="anchored" data-anchor-id="standart-normal-dağılım">
+<span class="header-section-number">3.2.2</span> Standart Normal Dağılım</h3>
+<p><strong>Standart normal dağılım</strong>, ortalaması 0 ve standart sapması 1 olan özel bir normal dağılım türüdür. Normal dağılımların standartlaştırılmış hali olarak da düşünülebilir. Bu dağılımda, herhangi bir veri noktasının z-skoru, o noktanın ortalamadan kaç standart sapma uzaklıkta olduğunu gösterir.</p>
+<p>Standart normal dağılım, eğrisinin toplam alanı 1 olacak şekilde çan şeklindedir ve ortalama etrafında simetriktir. Eğrinin en yüksek noktası, ortalama olan 0 değerindedir ve değerler uçlara doğru gittikçe olasılık yoğunluğu azalır. Tüm normal dağılımlar, bu dağılıma dönüştürülebilir, böylece farklı birimlerdeki veriler karşılaştırılabilir ve analiz edilebilir hale gelir.</p>
+<p>Bu dağılım, istatistikte sıklıkla kullanılır çünkü normal dağılım ile ilgili tüm olasılık hesaplamalarını kolaylaştırır. Örneğin, <strong>z-skoru</strong> kullanılarak bir veri noktasının hangi yüzdelik dilimde olduğu veya bir değerin olasılığı standart normal dağılım tabloları yardımıyla hesaplanabilir. Standart normal dağılım, istatistiksel analizlerde merkezi bir role sahiptir ve parametrik testler gibi birçok yöntemin temelini oluşturur.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Z-Skoru">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Z-Skoru
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Z-skoru, bir veri noktasının popülasyon ortalamasından kaç standart sapma uzaklıkta olduğunu gösteren bir ölçüdür. Z-skoru şu formülle hesaplanır:</p>
+<p><span class="math inline">\(Z = \frac{X - \mu}{\sigma}\)</span>​</p>
+<ul>
+<li><p><span class="math inline">\(X\)</span>: Veri noktası,</p></li>
+<li><p><span class="math inline">\(\mu\)</span>: Popülasyon ortalaması,</p></li>
+<li><p><span class="math inline">\(\sigma\)</span> : Popülasyon standart sapmasıdır.</p></li>
+</ul>
+<p>Z-skoru, verilerin standartlaştırılmasını sağlar ve farklı dağılımların karşılaştırılmasına olanak tanır. Örneğin, <span class="math inline">\(Z = 2\)</span> bir veri noktasının ortalamadan 2 standart sapma uzaklıkta olduğunu ifade eder.</p>
+</div>
+</div>
+</section><section id="t-dağılımı-t-distribution" class="level3" data-number="3.2.3"><h3 data-number="3.2.3" class="anchored" data-anchor-id="t-dağılımı-t-distribution">
+<span class="header-section-number">3.2.3</span> t-Dağılımı (t-Distribution)</h3>
+<p>t-Dağılımı, örnekleme dağılımlarında kullanılan ve küçük örneklem boyutlarında popülasyon varyansının bilinmediği durumlar için tasarlanmış bir sürekli olasılık dağılımıdır. William Sealy Gosset tarafından geliştirilmiş ve başlangıçta <a href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">Student’s t-distribution</a> olarak adlandırılmıştır. t-dağılımı, normal dağılıma benzer bir yapıya sahiptir ancak daha geniş kuyruklara sahiptir. Bu, küçük örneklemlerle çalışırken uç değerlerin daha yüksek bir olasılıkla gerçekleştiği anlamına gelir.</p>
+<p><strong>Matematiksel Açıklama</strong></p>
+<p>Bir örneklemden elde edilen ortalama ile popülasyon ortalamasının <strong>standart hata</strong> üzerinden farkını ölçmek için kullanılır.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Standart Hata - Standart Error (SE)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Standart Hata - Standart Error (SE)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Standart hata</strong>, bir örneklem istatistiğinin (örneğin, ortalama) örnekleme dağılımındaki değişkenliğini özetleyen bir ölçüttür. Standart hata, örneklemin standart sapması (<span class="math inline">\(s\)</span>) ve örneklem büyüklüğü ($n$) kullanılarak tahmin edilir ve şu formülle hesaplanır: <span class="math inline">\(SE = \frac{s}{\sqrt{n}}\)</span>​</p>
+<p>Standart hata, örneklem büyüklüğü arttıkça azalır. Bu, daha büyük örneklemlerle tahminlerin daha kesin hale geldiği anlamına gelir. Bu ilişki, genellikle “<strong><em>n’in karekökü kuralı</em></strong>” olarak adlandırılır; standart hatayı yarıya indirmek için örneklem büyüklüğünün dört katına çıkarılması gerekir. Standart hata kavramı, <strong>Merkezi Limit Teoremi</strong> ile ilişkilidir, çünkü bu teorem, yeterince büyük bir örneklemde, örneklem istatistiklerinin yaklaşık olarak normal dağılım göstereceğini ifade eder.</p>
+<p><strong>Karıştırmayın: Standard Sapma vs.&nbsp;Standart Hata</strong></p>
+<p>Standart sapma ve standart hata farklı kavramlardır ve genellikle birbirine karıştırılır. <strong>Standart sapma</strong>, bireysel veri noktalarının yayılımını, yani veri setindeki değişkenliği ölçer. Öte yandan, <strong>standart hata</strong>, bir örneklemden hesaplanan bir istatistiğin (örneğin, örneklem ortalaması) farklı örneklemler arasında nasıl değiştiğini ölçer. Kısaca:</p>
+<ul>
+<li>
+<strong>Standart Sapma (SD)</strong>: Tek bir veri setinin yayılımını ölçer.</li>
+<li>
+<strong>Standart Hata (SE)</strong>: Örneklem ortalamalarının dağılımını ölçer.</li>
+</ul>
+<p>Bu nedenle, <strong>standart hata</strong> bir tahminin hassasiyetini değerlendirirken kullanılırken, <strong>standart sapma</strong>, verilerin çeşitliliği hakkında bilgi sağlar.</p>
+</div>
+</div>
+<p>t-dağılımının temel formülü:</p>
+<p><span class="math inline">\(t = \frac{\bar{X}-\mu}{\frac{s}{\sqrt{n}}}\)</span>​</p>
+<p>Burada:</p>
+<ul>
+<li>
+<span class="math inline">\(\bar{X}\)</span>: Örneklem ortalaması,</li>
+<li>
+<span class="math inline">\(\mu\)</span>: Popülasyon ortalaması,</li>
+<li>
+<span class="math inline">\(s\)</span>: Örneklem standart sapması,</li>
+<li>
+<span class="math inline">\(n\)</span>: Örneklem büyüklüğüdür.</li>
+</ul>
+<p><strong>t- Dağılımının Özellikleri</strong></p>
+<ol type="1">
+<li>
+<strong>Simetrik ve Çan Şeklindedir</strong>: t-dağılımı, normal dağılım gibi çan şeklinde ve simetriktir.</li>
+<li>
+<strong>Serbestlik Derecesine (df - degrees of freedom) Bağlıdır</strong>: t-dağılımı, örneklem büyüklüğü azaldıkça daha geniş kuyruklara sahiptir. Serbestlik derecesi arttıkça (örneklem büyüdükçe), t-dağılımı normal dağılıma yaklaşır.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="Serbestlik Derecesi - Degrees of Freedom (df)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Serbestlik Derecesi - Degrees of Freedom (df)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Serbestlik derecesi</strong>, bir istatistiksel hesaplamada serbestçe değişebilen bağımsız veri noktalarının sayısını ifade eder. Bir parametrenin tahmininde kullanılan bağımsız veri sayısından, bu tahminde kullanılan ara hesaplamalar (örneğin, ortalama gibi) çıkarılarak hesaplanır. Örneğin, bir örneklemde varyans hesaplanırken, ortalama sabit bir değer olduğu için serbestlik derecesi <span class="math inline">\(N−1\)</span> olarak belirlenir. Serbestlik derecesi, özellikle t-dağılımı ve ki-kare dağılımı gibi istatistiksel testlerde, dağılımın şekli ve genişliği üzerinde önemli bir etkiye sahiptir. Matematiksel olarak, serbestlik derecesi, bir rastgele vektörün kaç bileşeni bilindiğinde tam olarak belirlenebileceğini ifade eder.</p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>
+<strong>Popülasyon Standart Sapması Bilinmediğinde Kullanılır</strong>: Normal dağılım yerine t-dağılımı, popülasyon standart sapmasının bilinmediği ve küçük örneklem boyutlarıyla çalışıldığı durumlarda kullanılır.</li>
+<li>
+<strong>Geniş Kuyruklar</strong>: t-dağılımı, uç değerlerin daha yüksek bir olasılıkla gerçekleştiğini varsayar.</li>
+</ol>
+<p><strong>Kullanım Alanları</strong></p>
+<ul>
+<li>
+<strong>t-Testleri</strong>: Küçük örneklemlerde iki grup arasındaki farkın anlamlılığını test etmek için kullanılır.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="t-Testleri">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+t-Testleri
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>t-testi</strong>, iki grup arasındaki ortalamaların istatistiksel olarak anlamlı bir fark gösterip göstermediğini belirlemek için kullanılan bir istatistiksel testtir. Küçük örneklemlerle çalışırken veya popülasyon varyansı bilinmediğinde kullanılır. t-testi, grup ortalamalarının farkını standart hata ile karşılaştırarak bir t-istatistiği hesaplar ve bu istatistiğin t-dağılımına göre anlamlılığını değerlendirir. Eğer t-istatistiği belirli bir eşik değerini (örneğin, <span class="math inline">\(p&lt;0.05\)</span>) aşarsa, gruplar arasında anlamlı bir fark olduğu sonucuna varılır.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Örnek veri seti oluşturma</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>  <span class="co"># Rastgelelik kontrolü</span></span>
+<span><span class="va">group1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">15</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>  <span class="co"># Grup 1 için rastgele değerler</span></span>
+<span><span class="va">group2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">15</span>, mean <span class="op">=</span> <span class="fl">110</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>  <span class="co"># Grup 2 için rastgele değerler</span></span>
+<span></span>
+<span><span class="co"># Grupları görüntüleme</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  94.39524  97.69823 115.58708 100.70508 101.29288 117.15065 104.60916
+ [8]  87.34939  93.13147  95.54338 112.24082 103.59814 104.00771 101.10683
+[15]  94.44159</code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 127.86913 114.97850  90.33383 117.01356 105.27209  99.32176 107.82025
+ [8]  99.73996 102.71109 103.74961  93.13307 118.37787 111.53373  98.61863
+[15] 122.53815</code></pre>
+</div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bağımsız iki örneklem t-testi</span></span>
+<span><span class="va">t_test_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">group1</span>, <span class="va">group2</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span><span class="co">#t.test() Fonksiyonu: İki grubun ortalamalarının eşit olup olmadığını test eder.</span></span>
+<span></span>
+<span><span class="co"># Test sonuçlarını görüntüleme</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">t_test_result</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  group1 and group2
+t = -1.685, df = 28, p-value = 0.1031
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -13.316499   1.296023
+sample estimates:
+mean of x mean of y 
+ 101.5238  107.5341 </code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>t-testi Sonuçlarının Anlamı:</strong></p>
+<ol type="1">
+<li>
+<strong>t = -1.685</strong>: t-istatistiği, iki grup arasındaki farkın standart hata cinsinden ne kadar büyük olduğunu gösterir. Negatif değer, Grup 1’in ortalamasının Grup 2’nin ortalamasından daha düşük olduğunu ifade eder, ancak bu fark istatistiksel olarak anlamlı olmayabilir.</li>
+<li>
+<strong>df = 28</strong>: Serbestlik derecesi (degrees of freedom), veri setinin büyüklüğüne ve kullanılan modelin özelliklerine bağlıdır. Burada serbestlik derecesi 28’dir.</li>
+<li>
+<strong>p-value = 0.1031</strong>: p-değeri, gruplar arasındaki farkın şansa bağlı olarak oluşma olasılığını ifade eder. Burada p=0.1031p = 0.1031p=0.1031, genellikle kabul edilen <span class="math inline">\(\alpha = 0.05\)</span> anlamlılık seviyesinden büyüktür. Bu, iki grup arasında istatistiksel olarak anlamlı bir fark olmadığını gösterir.</li>
+<li>
+<strong>95 percent confidence interval: [-13.316499, 1.296023]</strong>: Bu güven aralığı, iki grup arasındaki gerçek ortalama farkın hangi aralıkta olabileceğini ifade eder. Güven aralığı 0’ı içerdiği için (örneğin, -13.32 ile 1.30 arasında), iki grup arasında anlamlı bir fark olduğu söylenemez.</li>
+<li>
+<strong>mean of <code>x</code> = 101.5238, mean of <code>y</code> = 107.5341</strong>: Grup 1’in (<code>x</code>) ortalaması 101.52, Grup 2’nin (<code>y</code>) ortalaması 107.53’tür. Grup 2’nin ortalaması daha yüksek, ancak bu fark istatistiksel olarak <strong>anlamlı değildir</strong>.</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>t-Dağılımının Regresyon Analizindeki Rolü:</strong></li>
+</ul>
+<ol type="1">
+<li>
+<strong>Katsayıların Anlamlılığını Test Etmek</strong>: Regresyon analizinde, bağımsız değişkenlerin katsayılarının istatistiksel olarak anlamlı olup olmadığını değerlendirmek için <strong>t-testi</strong> kullanılır. t-testi, katsayı tahmininin standart hatası ile katsayının değerini karşılaştırarak bir <strong>t-istatistiği</strong> hesaplar: <span class="math inline">\(t = \frac{\hat{\beta} - \beta_0}{SE(\hat{\beta})}\)</span>. Bu t-istatistiği, t-dağılımına göre <strong>p-değeri</strong> hesaplamada kullanılır.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="p-değeri">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+p-değeri
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>p-değeri</strong>, bir istatistiksel test sonucunda, gözlenen verilerin veya daha uç sonuçların, test edilen dağılım altında tesadüfen ortaya çıkma olasılığını ifade eder.</p>
+<p>Yukarıdaki bağlamda, t-istatistiği, t-dağılımında hesaplanır ve p-değeri bu istatistiğin t-dağılımında daha uç değerlere düşme olasılığını temsil eder. Bu, iki grup arasındaki farkın rastlantısal olma ihtimalini değerlendirmek için kullanılır. Küçük bir p-değeri (genellikle <span class="math inline">\(p&lt;0.05\)</span>), farkın tesadüfi olmaktan çok anlamlı olabileceğini işaret eder.</p>
+</div>
+</div>
+<ol start="2" type="1">
+<li>
+<strong>Hata Terimlerinin Dağılımı:</strong> Regresyon analizinde, hata terimlerinin normal dağıldığı varsayılır. Ancak örneklem boyutu küçükse, katsayı tahminlerinin dağılımı normal değil, t-dağılımına uyar.</li>
+<li>
+<strong>Küçük Örneklemlerde Doğruluk:</strong> Eğer örneklem boyutu küçükse $n&lt;30$, katsayı tahminleri t-dağılımına göre değerlendirilir, çünkü küçük örneklemlerde t-dağılımı daha geniş kuyruklara sahiptir ve bu da uç değerleri daha iyi hesaba katar.</li>
+</ol>
+<ul>
+<li>
+<strong>Örneklem Dağılımı</strong>: Küçük örneklem boyutları için ortalamaların dağılımını modellemek amacıyla t-dağılımı kullanılır.</li>
+</ul></section><section id="üstel-dağılım-exponential-distribution" class="level3" data-number="3.2.4"><h3 data-number="3.2.4" class="anchored" data-anchor-id="üstel-dağılım-exponential-distribution">
+<span class="header-section-number">3.2.4</span> Üstel Dağılım (Exponential Distribution)</h3>
+<p>Üstel dağılım, olaylar arasındaki bekleme sürelerini modellemek için kullanılan bir sürekli olasılık dağılımıdır. Örneğin, bir ATM’ye gelen müşteriler arasındaki işlem süreleri, üstel dağılımın tipik bir örneğidir.</p>
+<p>Üstel dağılım, bir olayın sabit bir hızla meydana geldiği durumlarda, olaylar arasındaki sürelerin dağılımını modellemek için kullanılır. Bu dağılım, sıfırdan başlar ve asimetrik bir şekilde sağa doğru uzanır. Olasılıklar, değerler arttıkça azalır, bu nedenle kısa sürelerde olay gerçekleşme olasılığı daha yüksektir. Üstel dağılım, genellikle bir olayın gerçekleşme hızını veya bekleme sürelerini analiz etmek için kullanılır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Üstel dağılımda olasılık yoğunluğunu hesaplama</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">dexp</a></span><span class="op">(</span> </span>
+<span>  x <span class="op">=</span> <span class="fl">2</span>, <span class="co"># x: Değerler (süre)</span></span>
+<span>  rate <span class="op">=</span> <span class="fl">1</span> <span class="co"># rate: Oran (olayın gerçekleşme hızı)</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1353353</code></pre>
+</div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Olayın gerçekleşme hızının 1 olduğu bir üstel dağılımda,</span></span>
+<span><span class="co"># 2 birimlik bir sürede olayın gerçekleşme olasılığını hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Üstel Dağılım Grafik Görünümü</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="dagilim_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="tekdüze-dağılım-uniform-distribution" class="level3" data-number="3.2.5"><h3 data-number="3.2.5" class="anchored" data-anchor-id="tekdüze-dağılım-uniform-distribution">
+<span class="header-section-number">3.2.5</span> Tekdüze Dağılım (Uniform Distribution)</h3>
+<p>Tekdüze dağılım, belirli bir aralıkta tüm değerlerin eşit olasılıkla meydana geldiği bir sürekli olasılık dağılımıdır. Örneğin, 1 ile 100 arasında rastgele bir sayı seçildiğinde her sayının eşit olasılıkla seçilebileceği bir durum, tekdüze dağılımın bir örneğidir.</p>
+<p>Tekdüze dağılım, belirli bir alt ve üst sınır arasında sürekli bir veri setinin her değerinin eşit olasılıkla seçilme durumunu modellemek için kullanılır. Bu dağılımın olasılık yoğunluğu, verilen aralığın dışındaki tüm değerler için sıfırdır. Tekdüze dağılım, rastgele olayların eşit olasılıkla gerçekleştiği durumları analiz etmek için sıklıkla kullanılır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Tekdüze dağılımda olasılık yoğunluğunu hesaplama</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">dunif</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fl">0.5</span>, <span class="co"># x: Değerler</span></span>
+<span>  min <span class="op">=</span> <span class="fl">0</span>, <span class="co"># min: Alt sınır</span></span>
+<span>  max <span class="op">=</span> <span class="fl">1</span> <span class="co"># max: Üst sınır</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 0 ile 1 arasında bir tekdüze dağılımda,</span></span>
+<span><span class="co"># 0.5 değerinin olasılık yoğunluğunu hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Uniform Dağılım Grafik Görünümü</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="dagilim_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="gamma-dağılımı-gamma-distribution" class="level3" data-number="3.2.6"><h3 data-number="3.2.6" class="anchored" data-anchor-id="gamma-dağılımı-gamma-distribution">
+<span class="header-section-number">3.2.6</span> Gamma Dağılımı (Gamma Distribution)</h3>
+<p>Gamma dağılımı, sürekli bir değişkenin pozitif değerler üzerinde nasıl dağıldığını modellemek için kullanılır. Örneğin, bir çağrı merkezinde müşteriler arasındaki bekleme sürelerinin toplamını analiz etmek, gamma dağılımının bir örneğidir.</p>
+<p>Gamma dağılımı, belirli bir olayın toplam süresini veya bir olayın gerçekleşmesi için gereken süreyi modellemek için uygundur. Şekil ve ölçek parametrelerine bağlı olarak, dağılımın formu değişebilir. Bu dağılım, sağa çarpık olabilir ve sıfırdan başlayarak pozitif değerlere doğru genişler. Gamma dağılımı, bekleme süreleri, toplam zamanlama ve sigorta risk analizi gibi alanlarda yaygın olarak kullanılır.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Gamma dağılımında olasılık yoğunluğunu hesaplama</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">dgamma</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fl">2</span>, <span class="co"># x: Değerler (süre)</span></span>
+<span>  shape <span class="op">=</span> <span class="fl">2</span>, <span class="co"># shape: Şekil parametresi</span></span>
+<span>  scale <span class="op">=</span> <span class="fl">1</span> <span class="co"># scale: Ölçek parametresi</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2706706</code></pre>
+</div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Şekil parametresi 2 ve ölçek parametresi 1 olan bir gamma dağılımında,</span></span>
+<span><span class="co"># 2 değerinin olasılık yoğunluğunu hesaplar.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Gamma Dağılım Grafik Görünümü</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="dagilim_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Referanslar</strong></p>
+<p><a href="https://bookdown.org/pbaumgartner/swr-harris/04-probability-distributions.html" class="uri">https://bookdown.org/pbaumgartner/swr-harris/04-probability-distributions.html</a></p>
+<p><a href="https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r" class="uri">https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r</a></p>
+<p><a href="https://github.com/gedeck/practical-statistics-for-data-scientists/blob/master/R/code/Chapter%202%20-%20Data%20and%20sampling%20distributions.R" class="uri">https://github.com/gedeck/practical-statistics-for-data-scientists/blob/master/R/code/Chapter%202%20-%20Data%20and%20sampling%20distributions.R</a></p>
+<div style="page-break-after: always;"></div>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./ozet_istatistikler.html" class="pagination-link" aria-label="Merkezi Eğilim ve Yayılım Ölçüleri">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Merkezi Eğilim ve Yayılım Ölçüleri</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./hipotez.html" class="pagination-link" aria-label="Güven Aralıkları ve Hipotez Testleri">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Güven Aralıkları ve Hipotez Testleri</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

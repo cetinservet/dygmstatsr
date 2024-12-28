@@ -1,0 +1,17 @@
+# Önsöz {.unnumbered}
+
+Devlet yardımları, ekonomik ve sosyal kalkınmayı desteklemek amacıyla yürütülen önemli araçlardır. Ancak bu yardımların etkinliğinin değerlendirilmesi, kaynakların verimli kullanımı ve doğru politikaların oluşturulması açısından kritik bir öneme sahiptir. Etki değerlendirme yöntemleri, bu süreçte bilimsel bir temel sağlayarak karar alma mekanizmalarına rehberlik eder.
+
+Etki değerlendirme süreçlerinin güvenilir sonuçlar verebilmesi, kullanılan yöntemlerin sağlamlığı kadar, bu süreçlerde kullanılan verilerin niteliğiyle de doğrudan ilişkilidir. R programlama dili, analiz ve modelleme çalışmalarında sağladığı esneklik ve güç ile etki değerlendirme yöntemlerinin uygulanmasında kritik bir rol oynamaktadır. Bu çalışmada, devlet yardımlarının etki değerlendirme süreçlerinde kullanılabilecek yöntemlere teorik ve uygulamalı bir temel oluşturulması amaçlanmıştır. 
+
+Etki değerlendirme süreçlerinde doğru ve anlamlı sonuçlara ulaşmak, yalnızca kullanılan yöntemlerin etkinliği ile değil, aynı zamanda güvenilir ve tutarlı verilere dayanılarak gerçekleştirilen analizlerle mümkündür. Bu nedenle, istatistiksel analiz ve veri dönüşüm süreçleri, çalışmanın odak noktalarından biri olarak ele alınmıştır. Bu süreçler, devlet yardımlarının etkilerinin doğru bir şekilde ölçülmesinin ve daha etkili politikaların geliştirilmesinin temelini oluşturmaktadır. Bu çalışmanın, Başkanlığımız ve diğer bakanlık ve kurumlarda yürütülen faaliyetler için yardımcı bir rehber olabileceği değerlendirilmektedir. 
+
+Çalışma, R programı ile uyum içinde çalışan Quarto platformu kullanılarak hazırlanmıştır. Bu platformun sunduğu dinamik ve modüler yapı, kitabın etkili bir şekilde yapılandırılmasına olanak sağlamıştır. Kitap, Quarto’nun kitap formatı özelliğiyle derlenerek, hem kolay okunabilir bir kaynak hem de uygulamalı bir rehber olarak tasarlanmıştır.
+
+Çalışmanın, ülkemizin kalkınma hedeflerine katkı sağlaması ve bu alanda çalışan uzmanlara yardımcı olmasını dileriz.
+
+**Strateji ve Bütçe Başkanlığı**
+**Devlet Yardımları Genel Müdürlüğü**
+
+\newpage
+

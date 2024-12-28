@@ -1,0 +1,12 @@
+---
+title: "Veri Dönüşümleri"
+---
+
+Veri dönüşümleri, ham verinin analiz ve modelleme için uygun hale getirilmesi sürecinde temel bir adımdır. Bu başlık altında, veri manipülasyonu ve dönüşüm tekniklerine ilişkin kapsamlı bir içerik sunulmaktadır. Kitabın bu kısmında, sütun seçimi, satır filtreleme, sıralama ve sütun adlarının yeniden adlandırılması gibi temel veri manipülasyonu işlemlerinden başlayarak, yeni değişken oluşturma, istatistiksel özetler hazırlama ve veri birleştirme gibi daha karmaşık süreçlere kadar geniş bir yelpazede yöntemler ele alınmıştır. Bu yöntemlerin, R programlama dili kullanılarak pratik uygulamalarla nasıl gerçekleştirilebileceği adım adım açıklanmıştır.
+
+Veri manipülasyonu işlemlerinin ardından, veri şekillendirme ve metin manipülasyonu gibi daha spesifik konular ele alınmaktadır. Veri çerçevelerinin birleştirilmesi, veri ekleme işlemleri ve metinsel bilgilerin düzenlenmesi, modern veri analizi süreçlerinde sıkça karşılaşılan problemler için çözüm önerileri sunmaktadır. Özellikle, düzenli ifadeler (regex) ve janitor paketi gibi araçlar kullanılarak veri temizleme ve düzenleme süreçleri sade bir şekilde anlatılmıştır. Bu teknikler, büyük ve karmaşık veri setlerinin daha anlaşılır ve işlenebilir bir formata dönüştürülmesini sağlamaktadır.
+
+Çalışmanın bu kısmı ayrıca eksik verilerle çalışmaya yönelik detaylı yöntemler içermektedir. Eksik verilerin tespiti, görselleştirilmesi ve doldurulması gibi süreçler, analizlerin doğruluğunu artırmak ve tutarlı sonuçlar elde etmek için kritik bir öneme sahiptir. Bu bağlamda, DLOOKR ve MICE gibi R paketlerinin kullanımı uygulamalı örneklerle gösterilmiştir. Veri dönüşümüne yönelik bu kapsamlı yaklaşım, veri analizi süreçlerinde verilerin etkin bir şekilde işlenmesine ve analizlerden maksimum verim alınmasına olanak tanımaktadır.
+
+
+\newpage
