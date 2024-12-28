@@ -26,7 +26,7 @@ book:
   downloads: [pdf, docx]
   sharing: [twitter, linkedin]
   cover-image: cover.png
-  repo-url: https://github.com/cetinservet/veritemizleme
+  repo-url: https://github.com/cetinservet/dygmstatsr
 
 bibliography: references.bib
 
